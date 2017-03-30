@@ -3,7 +3,7 @@ function countWords(str) {
   // removing start and end spaces
   str = str.trim();
   
-  return str.split(/\s/).filter(el => {
-    return el;
+  return str.split(/\s/).filter(val => {
+    return val;
   }).length;
 }
