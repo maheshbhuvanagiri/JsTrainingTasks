@@ -1,0 +1,15 @@
+function createFunctions(n) {
+  var callbacks = [];
+  
+  var closur = function(v){
+    return function(){
+      return v;
+    };
+  };
+
+  for (var i=0; i<n; i++) {
+    callbacks.push(closur(i));
+  }
+  
+  return callbacks;
+}
