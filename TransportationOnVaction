@@ -1,16 +1,11 @@
 function rentalCarCost(d) {
-  //return 0 for days less than 1
-  if(d<1){
-    return 0;
-  }
   var dayCost = 40,
       totalCost = (d * dayCost);
   
-  if(d>=7){
-    return totalCost-50;
-  }else if(d>=3){
-    return totalCost-20;
-  }else{
-    return totalCost;
+  if (d >= 7) {
+    totalCost -= 50;
+  } else if (d >= 3) {
+    totalCost -= 20;
   }
+  return totalCost;
 }
