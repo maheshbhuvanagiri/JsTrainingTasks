@@ -1,34 +1,19 @@
-function zero(func) {
- return func ? func(0) : 0;
-}
-function one(func) {
-  return func ? func(1) : 1;
-}
-function two(func) {
-  return func ? func(2) : 2;
-}
-function three(func) {
- return func ? func(3) : 3;
-}
-function four(func) {
-  return func ? func(4) : 4;
-}
-function five(func) {
-  return func ? func(5) : 5;
-}
-function six(func) {
- return func ? func(6) : 6;
-}
-function seven(func) {
- return func ? func(7) : 7;
-}
-function eight(func) {
-return func ? func(8) : 8;
-}
-function nine(func) {
- return func ? func(9) : 9;
+function number(val){
+  return function (func) {
+   return func ? func(val) : val;
+ }
 }
 
+var zero = number(0),
+  one = number(1),
+  two = number(2),
+  three = number(3),
+  four = number(4),
+  five = number(5),
+  six = number(6),
+  seven = number(7),
+  eight = number(8),
+  nine = number(9);
 
 function plus(b) {
   return function(a){return a+b;}
