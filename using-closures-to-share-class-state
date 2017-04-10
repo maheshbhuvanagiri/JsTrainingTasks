@@ -1,0 +1,30 @@
+// Let's make a Cat constructor!
+var allWeights = [];
+var Cat = function (name , weight) {
+  var _weight = weight;
+  if(!name || !weight){
+     throw Error("name or weight values cannot be empty");
+  }
+  
+  allWeights.push(_weight);
+
+  Object.defineProperty(this, 'weight', {
+    get: function() {    
+      return _weight;
+    },
+    set: function(value) {
+      allWeights.pop(this.weight);
+      _weight = value;      
+    }
+  });
+};
+
+Object.defineProperty(Cat, 'averageWeight', {
+  get: function() {
+    return function() { 
+        var sum = allWeights.reduce((a, b) => a + b, 0);
+        return allWeights.length ? (sum / allWeights.length) : 0;
+      }
+    }
+});
+
