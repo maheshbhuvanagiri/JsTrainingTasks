@@ -1,15 +1,15 @@
 function createFunctions(n) {
-  var callbacks = [];
+  var fns = [];
   
-  var closur = function(v){
+  var closure = function(v){
     return function(){
       return v;
     };
   };
 
   for (var i=0; i<n; i++) {
-    callbacks.push(closur(i));
+    fns.push(closure(i));
   }
   
-  return callbacks;
+  return fns;
 }
