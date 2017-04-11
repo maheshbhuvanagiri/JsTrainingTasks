@@ -1,11 +1,11 @@
 function prefill(n, v) {
-  if (isNaN(parseInt(n)) || n < 0 || n % 1 != 0) {
-    throw new TypeError(n + ' is invalid');
-  }else {
+  if (/^\d+$/.test(n)) {
     var array = [];
     for(var i = 0; i < n; i++){
       array.push(v);
     }
     return array;
+  } else {
+    throw new TypeError(n + ' is invalid');
   }
 }
