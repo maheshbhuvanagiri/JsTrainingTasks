@@ -2,7 +2,7 @@ function createFunctions(n) {
   var fns = [];
   
   var closure = function(v) {
-    return function(){
+    return function() {
       return v;
     };
   };
