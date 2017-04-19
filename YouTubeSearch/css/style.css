@@ -1,0 +1,25 @@
+.searchDiv{
+    padding-bottom: 10px;
+    text-align: center;
+}
+ul.tiles li{
+    width: 200px;
+    height: 350px;
+    display: inline-block;
+    margin: 0px 6px;
+    border: 1px solid;
+}
+ul.tiles li img{
+    width: 200px;
+    height: 150px;
+}
+ul.tiles{
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+    width: auto;
+    overflow-x: auto;
+}
+body ul li{
+    list-style: none;
+}
