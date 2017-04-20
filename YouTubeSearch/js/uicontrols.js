@@ -3,20 +3,14 @@
 
  */
 var myApp = myApp || {};
-myApp.main = (function (apiService) {
-    var searchResult = {
-        totalResults: [],
-        currentPage: 1,
-        defaultPageSize: 4,
-    };
+myApp.ui = (function (document) {
 
-    function createRoller(items, startIndex, pageSize) {
+    function createRoller(items) {
         var body = document.body,
             divElement = document.getElementById("container"),
             ul = document.createElement('ul');
-        var list = items.slice(startIndex, pageSize);
-        
-        list.forEach(function (item) {
+
+        items.forEach(function (item) {
             ul.appendChild(createTile(item));
         });
 
@@ -49,7 +43,7 @@ myApp.main = (function (apiService) {
         return frag;
     }
 
-    function createSearchDiv() {
+    function createSearchDiv(onSearch) {
         var body = document.body,
             frag = document.createDocumentFragment(),
             div = document.createElement("div"),
@@ -63,9 +57,7 @@ myApp.main = (function (apiService) {
         inputBtn.setAttribute("value", "Search");
         inputBtn.appendChild(document.createTextNode("Search"));
 
-        inputBtn.addEventListener("click", function (e) {
-            performSearch(inputTxt.value);
-        });
+        inputBtn.addEventListener("click", onSearch);
 
         div.className = "searchDiv";
         div.appendChild(inputTxt);
@@ -74,11 +66,11 @@ myApp.main = (function (apiService) {
         body.appendChild(frag);
     }
 
-    function createPager(totalItems, pageSize) {
+    function createPager(totalItemsCount, pageSize, onPageClick) {
         var body = document.body,
             ul = document.createElement('ul'),
             pagerDiv = document.getElementById('pages'),
-            pagecount = Math.round(totalItems / pageSize),
+            pagecount = Math.round(totalItemsCount / pageSize),
             li = null;
 
         for (var i = 1; i <= pagecount; i++) {
@@ -103,36 +95,10 @@ myApp.main = (function (apiService) {
         }
         body.appendChild(pagerDiv);
     }
-    
-    function onPageClick(event) {
-        var pageNumber = parseInt(event.target.textContent),
-            startIndex = ((pageNumber - 1) * searchResult.defaultPageSize);
-
-        event.target.parentNode.childNodes.forEach(function (element) {
-            element.classList.remove("selected");
-        });
-        event.target.classList.add("selected");
-        createRoller(searchResult.totalResults.items, startIndex, startIndex + searchResult.defaultPageSize);
-    }
-
-
-    function performSearch(value) {
-        apiService.search(value).then(function (response) {
-            searchResult.totalResults = response;
-            createRoller(searchResult.totalResults.items, 0, searchResult.defaultPageSize);
-            createPager(searchResult.totalResults.items.length, searchResult.defaultPageSize);
-        });
-    }
-
-    function init() {
-        createSearchDiv()
-    }
 
     return {
-        init: init
-    };
-})(myApp.service);
-
-(function (app) {
-    app.main.init();
-})(myApp);
+        createRoller: createRoller,
+        createSearch: createSearchDiv,
+        createPager: createPager
+    }
+})(document);
