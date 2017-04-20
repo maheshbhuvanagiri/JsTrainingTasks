@@ -19,7 +19,21 @@ ul.tiles{
     white-space: nowrap;
     width: auto;
     overflow-x: auto;
+    text-align: center;
 }
+.pager{
+    text-align: center;
+}
+
+.pager li{
+    display: inline-block;
+    margin: 2px 5px;
+    cursor: pointer;
+}
+.pager li.selected{
+    color: red;
+}
+
 body ul li{
     list-style: none;
 }
