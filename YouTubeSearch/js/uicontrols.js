@@ -4,13 +4,27 @@
  */
 var myApp = myApp || {};
 myApp.ui = (function (document) {
+    var searchResult = {
+        totalResults: { totalItems: [] },
+        totalItems: [],
+        pageSize: 4,
+    };
 
-    function createRoller(items) {
+    function roller(options) {
+        searchResult.totalResults = options.totalResults || searchResult.totalResults;
+        searchResult.pageSize = options.pageSize || searchResult.pageSize;
+        searchResult.totalItems = searchResult.totalResults.items;
+        createRoller(0, searchResult.pageSize);
+        createPager();
+    }
+
+    function createRoller(startIndex, endIndex) {
         var body = document.body,
             divElement = document.getElementById("container"),
             ul = document.createElement('ul');
+        var list = searchResult.totalItems.slice(startIndex, endIndex);
 
-        items.forEach(function (item) {
+        list.forEach(function (item) {
             ul.appendChild(createTile(item));
         });
 
@@ -57,7 +71,9 @@ myApp.ui = (function (document) {
         inputBtn.setAttribute("value", "Search");
         inputBtn.appendChild(document.createTextNode("Search"));
 
-        inputBtn.addEventListener("click", onSearch);
+        inputBtn.addEventListener("click", function (e) {
+            onSearch(inputTxt.value);
+        });
 
         div.className = "searchDiv";
         div.appendChild(inputTxt);
@@ -66,17 +82,27 @@ myApp.ui = (function (document) {
         body.appendChild(frag);
     }
 
-    function createPager(totalItemsCount, pageSize, onPageClick) {
+    function createPager() {
         var body = document.body,
             ul = document.createElement('ul'),
             pagerDiv = document.getElementById('pages'),
-            pagecount = Math.round(totalItemsCount / pageSize),
+            pagecount = Math.round(searchResult.totalItems.length / searchResult.pageSize),
             li = null;
 
-        for (var i = 1; i <= pagecount; i++) {
+        for (var i = 0; i < pagecount; i++) {
             li = document.createElement("li");
-            li.appendChild(document.createTextNode(i));
-            li.addEventListener('click', onPageClick);
+            li.setAttribute("pageindex", i)
+            li.appendChild(document.createTextNode(i + 1));
+            li.addEventListener('click', function (event) {
+                var pageIndex = parseInt(event.target.attributes["pageindex"].value),
+                    startIndex = (pageIndex * searchResult.pageSize);
+
+                event.target.parentNode.childNodes.forEach(function (element) {
+                    element.classList.remove("selected");
+                });
+                event.target.classList.add("selected");
+                createRoller(startIndex, startIndex + searchResult.pageSize);
+            });
             ul.appendChild(li);
         }
 
@@ -85,7 +111,7 @@ myApp.ui = (function (document) {
 
         if (pagerDiv != null) {
             while (pagerDiv.firstChild) {
-                pagerDiv.removeChild(divElement.firstChild);
+                pagerDiv.removeChild(pagerDiv.firstChild);
             }
             pagerDiv.appendChild(ul);
         } else {
@@ -97,8 +123,7 @@ myApp.ui = (function (document) {
     }
 
     return {
-        createRoller: createRoller,
         createSearch: createSearchDiv,
-        createPager: createPager
+        roller: roller
     }
 })(document);
