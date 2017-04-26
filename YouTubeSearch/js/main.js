@@ -9,9 +9,9 @@ myApp.main = (function (apiService, ui) {
         currentPage: 1,
         defaultPageSize: 4,
     };
-
+    
+    //Building common details object from url response
     function createData(data) {
-
         searchResult.totalResults.push({
             url:'',
             description: '',
@@ -21,6 +21,7 @@ myApp.main = (function (apiService, ui) {
             imgUlr: ''
         });
     }
+
     function performSearch(value) {
         apiService.search(value).then(function (response) {
             //createData(data);
