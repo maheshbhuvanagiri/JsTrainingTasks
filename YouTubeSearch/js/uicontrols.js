@@ -5,15 +5,13 @@
 var myApp = myApp || {};
 myApp.ui = (function (document) {
     var searchResult = {
-        totalResults: { totalItems: [] },
         totalItems: [],
         pageSize: 4,
     };
 
     function roller(options) {
-        searchResult.totalResults = options.totalResults || searchResult.totalResults;
         searchResult.pageSize = options.pageSize || searchResult.pageSize;
-        searchResult.totalItems = searchResult.totalResults.items;
+        searchResult.totalItems = options.totalResults || searchResult.totalItems;
         createRoller(0, searchResult.pageSize);
         createPager();
     }
@@ -21,8 +19,8 @@ myApp.ui = (function (document) {
     function createRoller(startIndex, endIndex) {
         var body = document.body,
             divElement = document.getElementById("container"),
-            ul = document.createElement('ul');
-        var list = searchResult.totalItems.slice(startIndex, endIndex);
+            ul = document.createElement('ul'),
+            list = searchResult.totalItems.slice(startIndex, endIndex);
 
         list.forEach(function (item) {
             ul.appendChild(createTile(item));
@@ -49,7 +47,7 @@ myApp.ui = (function (document) {
             img = document.createElement("img");
 
         li.className = "tile";
-        img.src = item.snippet.thumbnails.high.url;
+        img.src = item.imgUrl;
 
         li.appendChild(img);
         frag.appendChild(li);

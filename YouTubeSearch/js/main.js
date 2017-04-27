@@ -6,28 +6,29 @@ var myApp = myApp || {};
 myApp.main = (function (apiService, ui) {
     var searchResult = {
         totalResults: [],
-        currentPage: 1,
         defaultPageSize: 4,
     };
-    
+
     //Building common details object from url response
     function createData(data) {
-        searchResult.totalResults.push({
-            url:'',
-            description: '',
-            author: '',
-            publishedDate: '',
-            viewsCount: '',
-            imgUlr: ''
+        data.items.forEach(function (element) {
+            searchResult.totalResults.push({
+                videoId: element.id.videoId,
+                title: element.snippet.title,
+                description: element.snippet.description,
+                publishedDate: element.snippet.publishedAt,
+                imgUrl: element.snippet.thumbnails.medium.url,
+                viewsCount: element.statistics ? element.statistics.viewCount: 0,
+            });
         });
     }
 
     function performSearch(value) {
         apiService.search(value).then(function (response) {
-            //createData(data);
+            createData(response);
             ui.roller({
-                totalResults: response,
-                pageSize: 4
+                totalResults: searchResult.totalResults,
+                pageSize: searchResult.defaultPageSize
             });
         });
     }
@@ -35,12 +36,6 @@ myApp.main = (function (apiService, ui) {
     function init() {
         ui.createSearch(performSearch)
     }
-
-    return {
-        init: init
-    };
+    
+    init();
 })(myApp.service, myApp.ui);
-
-(function (app) {
-    app.main.init();
-})(myApp);
