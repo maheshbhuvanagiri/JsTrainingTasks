@@ -4,24 +4,50 @@
  */
 var myApp = myApp || {};
 myApp.ui = (function (document) {
-    var searchResult = {
+    var options = {
         totalItems: [],
         pageSize: 4,
+        currentPageIndex: 0,
+        startIndex: 0,
+        endIndex: 0
     };
+    var width, height;
 
-    function roller(options) {
-        searchResult.pageSize = options.pageSize || searchResult.pageSize;
-        searchResult.totalItems = options.totalResults || searchResult.totalItems;
-        createRoller(0, searchResult.pageSize);
-        createPager();
+    window.addEventListener("resize",function(){
+        width = window.innerWidth
+            || document.documentElement.clientWidth
+            || document.body.clientWidth;
+        height = window.innerHeight
+            || document.documentElement.clientHeight
+            || document.body.clientHeight;
+
+        if (width < 750 && width > 450) {
+            options.pageSize = 2;
+        } else if (width < 450) {
+            options.pageSize = 1;
+        }else{
+            options.pageSize = 4;
+        }
+        createRoller();
+    });
+
+
+    function roller(opt) {
+        options.pageSize = opt.pageSize || options.pageSize;
+        options.totalItems = opt.totalResults || options.totalItems;
+        options.currentPageIndex = opt.currentPage || options.currentPageIndex;
+        createRoller();
     }
 
-    function createRoller(startIndex, endIndex) {
+    function createRoller() {
         var body = document.body,
             divElement = document.getElementById("container"),
-            ul = document.createElement('ul'),
-            list = searchResult.totalItems.slice(startIndex, endIndex);
-
+            ul = document.createElement('ul'), list;
+            options.startIndex = (options.currentPageIndex * options.pageSize);
+            options.endIndex = options.startIndex + options.pageSize;
+            list = options.totalItems.slice(options.startIndex, options.endIndex);
+            
+        
         list.forEach(function (item) {
             ul.appendChild(createTile(item));
         });
@@ -39,6 +65,7 @@ myApp.ui = (function (document) {
             divElement.appendChild(ul);
             body.appendChild(divElement);
         }
+        createPager();
     }
 
     function createTile(item) {
@@ -84,7 +111,7 @@ myApp.ui = (function (document) {
         var body = document.body,
             ul = document.createElement('ul'),
             pagerDiv = document.getElementById('pages'),
-            pagecount = Math.round(searchResult.totalItems.length / searchResult.pageSize),
+            pagecount = Math.round(options.totalItems.length / options.pageSize),
             li = null;
 
         for (var i = 0; i < pagecount; i++) {
@@ -93,19 +120,26 @@ myApp.ui = (function (document) {
             li.appendChild(document.createTextNode(i + 1));
             li.addEventListener('click', function (event) {
                 var pageIndex = parseInt(event.target.attributes["pageindex"].value),
-                    startIndex = (pageIndex * searchResult.pageSize);
+                    startIndex = (pageIndex * options.pageSize);
 
                 event.target.parentNode.childNodes.forEach(function (element) {
                     element.classList.remove("selected");
                 });
                 event.target.classList.add("selected");
-                createRoller(startIndex, startIndex + searchResult.pageSize);
+                options.currentPageIndex = pageIndex;
+                createRoller();
             });
             ul.appendChild(li);
         }
 
         ul.className = "pager";
-        ul.firstChild.classList.add("selected");
+        ul.childNodes.forEach(function(childNode){
+            if(childNode.attributes["pageindex"].value == options.currentPageIndex){
+                childNode.classList.add("selected");
+            }
+        });
+        
+        //ul.firstChild.classList.add("selected");
 
         if (pagerDiv != null) {
             while (pagerDiv.firstChild) {
