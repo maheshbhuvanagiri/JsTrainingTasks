@@ -10,7 +10,8 @@ myApp.main = (function (apiService, ui) {
     };
 
     //Building common details object from url response
-    function createData(data) {
+    function createRoller(data) {
+        searchResult.totalResults = [];
         data.items.forEach(function (element) {
             searchResult.totalResults.push({
                 videoId: element.id.videoId,
@@ -18,18 +19,19 @@ myApp.main = (function (apiService, ui) {
                 description: element.snippet.description,
                 publishedDate: element.snippet.publishedAt,
                 imgUrl: element.snippet.thumbnails.medium.url,
-                viewsCount: element.statistics ? element.statistics.viewCount: 0,
+                viewsCount: element.statistics ? element.statistics.viewCount : 0,
             });
+        });
+
+        ui.roller({
+            totalResults: searchResult.totalResults,
+            pageSize: searchResult.defaultPageSize
         });
     }
 
     function performSearch(value) {
         apiService.search(value).then(function (response) {
-            createData(response);
-            ui.roller({
-                totalResults: searchResult.totalResults,
-                pageSize: searchResult.defaultPageSize
-            });
+            createRoller(response);
         });
     }
 
@@ -38,4 +40,4 @@ myApp.main = (function (apiService, ui) {
     }
     
     init();
-})(myApp.service, myApp.ui);
+})(myApp.youtubeService, myApp.ui);

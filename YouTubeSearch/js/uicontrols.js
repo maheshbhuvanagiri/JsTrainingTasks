@@ -13,7 +13,7 @@ myApp.ui = (function (document) {
     };
     var width, height;
 
-    window.addEventListener("resize",function(){
+    window.addEventListener("resize", function () {
         width = window.innerWidth
             || document.documentElement.clientWidth
             || document.body.clientWidth;
@@ -25,35 +25,26 @@ myApp.ui = (function (document) {
             options.pageSize = 2;
         } else if (width < 450) {
             options.pageSize = 1;
-        }else{
+        } else {
             options.pageSize = 4;
         }
         createRoller();
     });
 
 
-    function roller(opt) {
-        options.pageSize = opt.pageSize || options.pageSize;
-        options.totalItems = opt.totalResults || options.totalItems;
-        options.currentPageIndex = opt.currentPage || options.currentPageIndex;
-        createRoller();
-    }
-
     function getItems() {
         var prePageIndex, nextIndex;
 
         prePageIndex = options.startIndex;
-        nextIndex = (options.currentPageIndex * options.pageSize);
+        options.startIndex = (options.currentPageIndex * options.pageSize);
         // if(nextIndex > options.startIndex ){
         //     options.startIndex = nextIndex;
-        //     options.currentPageIndex = nextIndex;
         // }
-        if(options.startIndex > options.totalItems.length){
+        if (options.startIndex > options.totalItems.length) {
             options.startIndex = 0;
             options.currentPageIndex = 0;
         }
         options.endIndex = options.startIndex + options.pageSize;
-
         return options.totalItems.slice(options.startIndex, options.endIndex);;
     }
 
@@ -62,8 +53,8 @@ myApp.ui = (function (document) {
             divElement = document.getElementById("container"),
             ul = document.createElement('ul'),
             list = getItems();
-            
-        
+
+
         list.forEach(function (item) {
             ul.appendChild(createTile(item));
         });
@@ -135,27 +126,23 @@ myApp.ui = (function (document) {
             li.setAttribute("pageindex", i)
             li.appendChild(document.createTextNode(i + 1));
             li.addEventListener('click', function (event) {
-                var pageIndex = parseInt(event.target.attributes["pageindex"].value),
-                    startIndex = (pageIndex * options.pageSize);
-
                 event.target.parentNode.childNodes.forEach(function (element) {
                     element.classList.remove("selected");
                 });
                 event.target.classList.add("selected");
-                options.currentPageIndex = pageIndex;
+                options.currentPageIndex = parseInt(event.target.attributes["pageindex"].value);
                 createRoller();
             });
             ul.appendChild(li);
         }
 
         ul.className = "pager";
-        ul.childNodes.forEach(function(childNode){
-            if(childNode.attributes["pageindex"].value == options.currentPageIndex){
+        ul.childNodes.forEach(function (childNode) {
+            if (childNode.attributes["pageindex"].value == options.currentPageIndex) {
                 childNode.classList.add("selected");
+                return;
             }
         });
-        
-        //ul.firstChild.classList.add("selected");
 
         if (pagerDiv != null) {
             while (pagerDiv.firstChild) {
@@ -170,8 +157,15 @@ myApp.ui = (function (document) {
         body.appendChild(pagerDiv);
     }
 
+    function initialize(opt) {
+        options.pageSize = opt.pageSize || options.pageSize;
+        options.totalItems = opt.totalResults || options.totalItems;
+        options.currentPageIndex = opt.currentPage || options.currentPageIndex;
+        createRoller();
+    }
+
     return {
         createSearch: createSearchDiv,
-        roller: roller
+        roller: initialize
     }
 })(document);

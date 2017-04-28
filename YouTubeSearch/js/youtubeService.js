@@ -2,7 +2,7 @@
  * Created by Mahesh on 4/19/2017.
  */
 var myApp = myApp || {};
-myApp.service = (function (ajax) {
+myApp.youtubeService = (function (ajax) {
     var statsApi = 'https://www.googleapis.com/youtube/v3/videos?key=AIzaSyDc3C5q7k3JHC-GW5ViwoqeeFFyrzTnvYY',
         searchApi = 'https://www.googleapis.com/youtube/v3/search?key=AIzaSyDc3C5q7k3JHC-GW5ViwoqeeFFyrzTnvYY';
 
