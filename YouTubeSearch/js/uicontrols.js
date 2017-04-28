@@ -9,9 +9,12 @@ myApp.ui = (function (document) {
         pageSize: 4,
         currentPageIndex: 0,
         startIndex: 0,
-        endIndex: 0
+        endIndex: 0,
+        pagecount: 0
     };
-    var width, height;
+    var width, height, swipeIndex;
+    var swipeStartX = 0;
+    var swipeStartY = 0;
 
     window.addEventListener("resize", function () {
         width = window.innerWidth
@@ -31,6 +34,35 @@ myApp.ui = (function (document) {
         createRoller();
     });
 
+    window.addEventListener("touchstart", function (event) {
+        swipeStartX = event.changedTouches[0].screenX;
+    }, false);
+
+    window.addEventListener("touchend", function (event) {
+        swipeEndX = event.changedTouches[0].screenX;
+        onSwipeEnd();
+    }, false);
+
+    function onSwipeEnd() {
+        if (swipeStartX > swipeEndX) {
+            swipeIndex = options.currentPageIndex + 1;
+            if (swipeIndex > options.pagecount) {
+                options.currentPageIndex = 0;
+            } else {
+                options.currentPageIndex = swipeIndex;
+            }
+            createRoller();
+        }
+        if (swipeStartX < swipeEndX) {
+            swipeIndex = options.currentPageIndex - 1;
+            if (swipeIndex > -1) {
+                options.currentPageIndex = swipeIndex;
+            } else {
+                options.currentPageIndex = options.pagecount - 1
+            }
+            createRoller();
+        }
+    }
 
     function getItems() {
         var prePageIndex, nextIndex;
@@ -118,10 +150,9 @@ myApp.ui = (function (document) {
         var body = document.body,
             ul = document.createElement('ul'),
             pagerDiv = document.getElementById('pages'),
-            pagecount = Math.round(options.totalItems.length / options.pageSize),
             li = null;
-
-        for (var i = 0; i < pagecount; i++) {
+        options.pagecount = Math.round(options.totalItems.length / options.pageSize)
+        for (var i = 0; i < options.pagecount; i++) {
             li = document.createElement("li");
             li.setAttribute("pageindex", i)
             li.appendChild(document.createTextNode(i + 1));
