@@ -39,13 +39,29 @@ myApp.ui = (function (document) {
         createRoller();
     }
 
+    function getItems() {
+        var prePageIndex, nextIndex;
+
+        prePageIndex = options.startIndex;
+        nextIndex = (options.currentPageIndex * options.pageSize);
+        // if(nextIndex > options.startIndex ){
+        //     options.startIndex = nextIndex;
+        //     options.currentPageIndex = nextIndex;
+        // }
+        if(options.startIndex > options.totalItems.length){
+            options.startIndex = 0;
+            options.currentPageIndex = 0;
+        }
+        options.endIndex = options.startIndex + options.pageSize;
+
+        return options.totalItems.slice(options.startIndex, options.endIndex);;
+    }
+
     function createRoller() {
         var body = document.body,
             divElement = document.getElementById("container"),
-            ul = document.createElement('ul'), list;
-            options.startIndex = (options.currentPageIndex * options.pageSize);
-            options.endIndex = options.startIndex + options.pageSize;
-            list = options.totalItems.slice(options.startIndex, options.endIndex);
+            ul = document.createElement('ul'),
+            list = getItems();
             
         
         list.forEach(function (item) {
