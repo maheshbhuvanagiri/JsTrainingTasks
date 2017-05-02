@@ -7,14 +7,9 @@ myApp.ui = (function (document) {
     var options = {
         totalItems: [],
         pageSize: 4,
-        currentPageIndex: 0,
-        startIndex: 0,
-        endIndex: 0,
-        pagecount: 0
+        currentPageIndex: 0
     };
-    var width, height, swipeIndex;
-    var swipeStartX = 0;
-    var swipeStartY = 0;
+    var width, height, pagecount = 0, startIndex = 0, endIndex = 0, swipeStartX = 0;
 
     window.addEventListener("resize", function () {
         width = window.innerWidth
@@ -44,9 +39,10 @@ myApp.ui = (function (document) {
     }, false);
 
     function onSwipeEnd() {
+        var swipeIndex;
         if (swipeStartX > swipeEndX) {
             swipeIndex = options.currentPageIndex + 1;
-            if (swipeIndex > options.pagecount) {
+            if (swipeIndex > pagecount) {
                 options.currentPageIndex = 0;
             } else {
                 options.currentPageIndex = swipeIndex;
@@ -58,7 +54,7 @@ myApp.ui = (function (document) {
             if (swipeIndex > -1) {
                 options.currentPageIndex = swipeIndex;
             } else {
-                options.currentPageIndex = options.pagecount - 1
+                options.currentPageIndex = pagecount - 1
             }
             createRoller();
         }
@@ -67,17 +63,17 @@ myApp.ui = (function (document) {
     function getItems() {
         var prePageIndex, nextIndex;
 
-        prePageIndex = options.startIndex;
-        options.startIndex = (options.currentPageIndex * options.pageSize);
+        prePageIndex = startIndex;
+        startIndex = (options.currentPageIndex * options.pageSize);
         // if(nextIndex > options.startIndex ){
         //     options.startIndex = nextIndex;
         // }
-        if (options.startIndex > options.totalItems.length) {
-            options.startIndex = 0;
+        if (startIndex > options.totalItems.length) {
+            startIndex = 0;
             options.currentPageIndex = 0;
         }
-        options.endIndex = options.startIndex + options.pageSize;
-        return options.totalItems.slice(options.startIndex, options.endIndex);;
+        endIndex = startIndex + options.pageSize;
+        return options.totalItems.slice(startIndex, endIndex);;
     }
 
     function createRoller() {
@@ -151,8 +147,8 @@ myApp.ui = (function (document) {
             ul = document.createElement('ul'),
             pagerDiv = document.getElementById('pages'),
             li = null;
-        options.pagecount = Math.round(options.totalItems.length / options.pageSize)
-        for (var i = 0; i < options.pagecount; i++) {
+        pagecount = Math.round(options.totalItems.length / options.pageSize)
+        for (var i = 0; i < pagecount; i++) {
             li = document.createElement("li");
             li.setAttribute("pageindex", i)
             li.appendChild(document.createTextNode(i + 1));

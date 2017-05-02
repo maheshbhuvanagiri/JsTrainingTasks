@@ -38,6 +38,6 @@ myApp.main = (function (apiService, ui) {
     function init() {
         ui.createSearch(performSearch)
     }
-    
+
     init();
 })(myApp.youtubeService, myApp.ui);
