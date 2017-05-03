@@ -120,11 +120,16 @@ myApp.ui = (function (document) {
 
         img.src = item.imgUrl;
         title.textContent = item.title;
-        publishedDate.textContent = item.publishedDate;
+        publishedDate.textContent = getDateString(item.publishedDate);
         viewsCount.textContent = item.viewsCount;
         //description.textContent = item.description;
 
         return document.importNode(tileTemp.content, true);
+    }
+
+    function getDateString(date){
+        var dateObj = new Date(date);
+        return dateObj.getFullYear() + '-' + (dateObj.getUTCMonth()+1) + '-' + dateObj.getUTCDate();
     }
 
     function createSearchDiv(onSearch) {
