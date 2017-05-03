@@ -2,7 +2,19 @@
     padding-bottom: 10px;
     text-align: center;
 }
-ul.tiles li{
+.content{
+    margin: 0px;
+    padding: 0px;
+}
+label {
+    white-space: normal;
+    word-break: break-all;
+}
+.hide{
+    display: none !important;
+}
+
+ul.tiles li.tile{
     width: 200px;
     height: 350px;
     display: inline-block;

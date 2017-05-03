@@ -4,12 +4,15 @@
  */
 var myApp = myApp || {};
 myApp.ui = (function (document) {
-    var options = {
-        totalItems: [],
-        pageSize: 4,
-        currentPageIndex: 0
-    };
-    var width, height, pagecount = 0, startIndex = 0, endIndex = 0, swipeStartX = 0;
+    var pageCount = 0,
+        startIndex = 0,
+        endIndex = 0,
+        swipeStartX = 0,
+        options = {
+            totalItems: [],
+            pageSize: 4,
+            currentPageIndex: 0
+        };
 
     window.addEventListener("resize", function () {
         width = window.innerWidth
@@ -26,7 +29,7 @@ myApp.ui = (function (document) {
         } else {
             options.pageSize = 4;
         }
-        createRoller();
+        displayTiles();
     });
 
     window.addEventListener("touchstart", function (event) {
@@ -47,74 +50,81 @@ myApp.ui = (function (document) {
             } else {
                 options.currentPageIndex = swipeIndex;
             }
-            createRoller();
-        }
-        if (swipeStartX < swipeEndX) {
+        } else {
             swipeIndex = options.currentPageIndex - 1;
             if (swipeIndex > -1) {
                 options.currentPageIndex = swipeIndex;
             } else {
                 options.currentPageIndex = pagecount - 1
             }
-            createRoller();
         }
+        displayTiles();
     }
 
-    function getItems() {
-        var prePageIndex, nextIndex;
+    function displayTiles(){
+        var container = document.getElementById("container"),
+            tiles = container.querySelector('.tiles'),
+            prePageIndex = startIndex;
 
-        prePageIndex = startIndex;
         startIndex = (options.currentPageIndex * options.pageSize);
-        // if(nextIndex > options.startIndex ){
-        //     options.startIndex = nextIndex;
-        // }
         if (startIndex > options.totalItems.length) {
             startIndex = 0;
             options.currentPageIndex = 0;
         }
         endIndex = startIndex + options.pageSize;
-        return options.totalItems.slice(startIndex, endIndex);;
+
+        tiles.querySelectorAll("li").forEach(function (ele, index) {
+            if (index >= startIndex && index < endIndex) {
+                ele.classList.remove("hide");
+            } else {
+                ele.classList.add("hide");
+            }
+        });
     }
 
     function createRoller() {
         var body = document.body,
-            divElement = document.getElementById("container"),
-            ul = document.createElement('ul'),
-            list = getItems();
+            rollerTemplate = document.querySelector("#rollerTemplate"),
+            container = rollerTemplate.content.querySelector("#container"),
+            tiles = container.querySelector('.tiles'),
+            list = options.totalItems,
+            divElement = document.getElementById("container");
 
+        if (tiles.childNodes.length) {
+            while (tiles.firstChild) {
+                tiles.removeChild(tiles.firstChild);
+            }
+        }
 
         list.forEach(function (item) {
-            ul.appendChild(createTile(item));
+            tiles.appendChild(createTile(item));
         });
 
-        ul.className = "tiles";
-
-        if (divElement != null) {
-            while (divElement.firstChild) {
-                divElement.removeChild(divElement.firstChild);
-            }
-            divElement.appendChild(ul);
-        } else {
-            divElement = document.createElement('div');
-            divElement.id = "container";
-            divElement.appendChild(ul);
-            body.appendChild(divElement);
+        if (divElement) {
+            body.removeChild(divElement);
         }
+        body.appendChild(document.importNode(rollerTemplate.content, true));
+        displayTiles();   
         createPager();
     }
 
     function createTile(item) {
-        var frag = document.createDocumentFragment(),
-            li = document.createElement("li"),
-            img = document.createElement("img");
+        var tileTemp = document.querySelector('#tileTemplate'),
+            tile = tileTemp.content.querySelector('.tile'),
+            content = tileTemp.content.querySelector('.content'),
+            img = content.querySelector('.youtubeImg'),
+            title = content.querySelector('.title'),
+            publishedDate = content.querySelector('.publishedDate'),
+            viewsCount = content.querySelector('.viewsCount'),
+            description = content.querySelector('.description');
 
-        li.className = "tile";
         img.src = item.imgUrl;
+        title.textContent = item.title;
+        publishedDate.textContent = item.publishedDate;
+        viewsCount.textContent = item.viewsCount;
+        //description.textContent = item.description;
 
-        li.appendChild(img);
-        frag.appendChild(li);
-
-        return frag;
+        return document.importNode(tileTemp.content, true);
     }
 
     function createSearchDiv(onSearch) {
@@ -158,7 +168,7 @@ myApp.ui = (function (document) {
                 });
                 event.target.classList.add("selected");
                 options.currentPageIndex = parseInt(event.target.attributes["pageindex"].value);
-                createRoller();
+                displayTiles();
             });
             ul.appendChild(li);
         }
