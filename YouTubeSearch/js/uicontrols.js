@@ -90,12 +90,11 @@ myApp.ui = (function (document) {
             list = options.totalItems,
             divElement = document.getElementById("container");
 
-        if (tiles.childNodes.length) {
-            while (tiles.firstChild) {
-                tiles.removeChild(tiles.firstChild);
-            }
+            
+        
+        while (tiles.hasChildNodes()) {
+            tiles.removeChild(tiles.lastChild);
         }
-
         list.forEach(function (item) {
             tiles.appendChild(createTile(item));
         });
@@ -122,7 +121,7 @@ myApp.ui = (function (document) {
         title.textContent = item.title;
         publishedDate.textContent = getDateString(item.publishedDate);
         viewsCount.textContent = item.viewsCount;
-        //description.textContent = item.description;
+        description.textContent = item.description;
 
         return document.importNode(tileTemp.content, true);
     }
