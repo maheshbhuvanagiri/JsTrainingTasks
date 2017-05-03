@@ -12,7 +12,8 @@ myApp.youtubeService = (function (ajax) {
     }
 
     function searchYoutube(searchKey) {
-        var videosList = [], Ids = [];
+        var videosList = [], 
+            Ids = [];
         return ajax.get(searchApi + '&part=snippet&maxResults=15&q=' + searchKey).then(function (response) {
             videosList = JSON.parse(response);
             videosList.items.forEach(function (item) {
