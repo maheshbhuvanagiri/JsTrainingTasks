@@ -15,7 +15,7 @@ myApp.main = (function (apiService, ui) {
         data.items.forEach(function (element) {
             searchResult.totalResults.push({
                 videoId: element.id.videoId,
-                title: element.snippet.title,
+                title: element.snippet.channelTitle,
                 description: element.snippet.description,
                 publishedDate: element.snippet.publishedAt,
                 imgUrl: element.snippet.thumbnails.medium.url,

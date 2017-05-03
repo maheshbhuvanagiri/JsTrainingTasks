@@ -6,6 +6,9 @@
     margin: 0px;
     padding: 0px;
 }
+.content div{
+    margin-bottom: 10px;
+}
 label {
     white-space: normal;
     word-break: break-all;
@@ -15,14 +18,14 @@ label {
 }
 
 ul.tiles li.tile{
-    width: 200px;
+    width: 280px;
     height: 350px;
-    display: inline-block;
+    display: inline-flex;
     margin: 0px 6px;
     border: 1px solid;
 }
 ul.tiles li img{
-    width: 200px;
+    width: 280px;
     height: 150px;
 }
 ul.tiles{

@@ -80,6 +80,7 @@ myApp.ui = (function (document) {
                 ele.classList.add("hide");
             }
         });
+        createPager();
     }
 
     function createRoller() {
@@ -104,7 +105,6 @@ myApp.ui = (function (document) {
         }
         body.appendChild(document.importNode(rollerTemplate.content, true));
         displayTiles();   
-        createPager();
     }
 
     function createTile(item) {
@@ -161,7 +161,9 @@ myApp.ui = (function (document) {
             ul = document.createElement('ul'),
             pagerDiv = document.getElementById('pages'),
             li = null;
-        pagecount = Math.round(options.totalItems.length / options.pageSize)
+        
+        pagecount = Math.round(options.totalItems.length / options.pageSize);
+        
         for (var i = 0; i < pagecount; i++) {
             li = document.createElement("li");
             li.setAttribute("pageindex", i)
