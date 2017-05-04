@@ -34,7 +34,7 @@ div.col-full{
 
 ul.tiles li.tile{
     width: 280px;
-    height: 350px;
+    height: 370px;
     display: inline-flex;
     margin: 0px 6px;
     border: 1px solid;
@@ -48,7 +48,6 @@ ul.tiles{
     padding: 0;
     white-space: nowrap;
     width: auto;
-    overflow-x: auto;
     text-align: center;
 }
 .pager{
