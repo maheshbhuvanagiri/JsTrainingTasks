@@ -8,6 +8,8 @@
 }
 .content div{
     margin-bottom: 10px;
+    width: 100%;
+    float: left;
 }
 label {
     white-space: normal;
@@ -15,6 +17,19 @@ label {
 }
 .hide{
     display: none !important;
+}
+div.icon{
+    float: left;
+    width: 25%;
+}
+
+div.col{
+  float: left;
+  width: 75%;
+}
+div.col-full{
+  float: left;
+  width:   100%;
 }
 
 ul.tiles li.tile{

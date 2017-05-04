@@ -4,16 +4,15 @@
  */
 var myApp = myApp || {};
 myApp.main = (function (apiService, ui) {
-    var searchResult = {
-        totalResults: [],
-        defaultPageSize: 4,
-    };
+    var totalResults= [],
+        DEFAULT_SIZE= 4;
+    
 
     //Building common details object from url response
     function createRoller(data) {
-        searchResult.totalResults = [];
+        totalResults = [];
         data.items.forEach(function (element) {
-            searchResult.totalResults.push({
+            totalResults.push({
                 videoId: element.id.videoId,
                 title: element.snippet.channelTitle,
                 description: element.snippet.description,
@@ -24,8 +23,8 @@ myApp.main = (function (apiService, ui) {
         });
 
         ui.roller({
-            totalResults: searchResult.totalResults,
-            pageSize: searchResult.defaultPageSize
+            totalResults: totalResults,
+            pageSize: DEFAULT_SIZE,
         });
     }
 

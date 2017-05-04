@@ -12,6 +12,14 @@ myApp.ui = (function (document) {
             totalItems: [],
             pageSize: 4,
             currentPageIndex: 0
+        },
+        tabResolution = {
+            MIN_WIDTH: 450,
+            MAX_WIDTH: 750
+        },
+        mobResolution ={
+            MAX_WIDTH: 450,
+            MIN_WIDTH: 0
         };
 
     window.addEventListener("resize", function () {
@@ -22,9 +30,9 @@ myApp.ui = (function (document) {
             || document.documentElement.clientHeight
             || document.body.clientHeight;
 
-        if (width < 750 && width > 450) {
+        if (width < tabResolution.MAX_WIDTH && width > tabResolution.MIN_WIDTH) {
             options.pageSize = 2;
-        } else if (width < 450) {
+        } else if (width < tabResolution.MAX_WIDTH) {
             options.pageSize = 1;
         } else {
             options.pageSize = 4;
@@ -91,11 +99,10 @@ myApp.ui = (function (document) {
             list = options.totalItems,
             divElement = document.getElementById("container");
 
-            
-        
         while (tiles.hasChildNodes()) {
             tiles.removeChild(tiles.lastChild);
         }
+
         list.forEach(function (item) {
             tiles.appendChild(createTile(item));
         });
@@ -133,7 +140,6 @@ myApp.ui = (function (document) {
 
     function createSearchDiv(onSearch) {
         var body = document.body,
-            frag = document.createDocumentFragment(),
             div = document.createElement("div"),
             inputTxt = document.createElement("input"),
             inputBtn = document.createElement("input");
@@ -152,8 +158,7 @@ myApp.ui = (function (document) {
         div.className = "searchDiv";
         div.appendChild(inputTxt);
         div.appendChild(inputBtn);
-        frag.appendChild(div);
-        body.appendChild(frag);
+        body.appendChild(div);
     }
 
     function createPager() {
@@ -203,7 +208,6 @@ myApp.ui = (function (document) {
     function initialize(opt) {
         options.pageSize = opt.pageSize || options.pageSize;
         options.totalItems = opt.totalResults || options.totalItems;
-        options.currentPageIndex = opt.currentPage || options.currentPageIndex;
         createRoller();
     }
 
