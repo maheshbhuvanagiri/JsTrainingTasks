@@ -3,23 +3,23 @@
  */
 var myApp = myApp || {};
 myApp.youtubeService = (function (ajax) {
-    var statsApi = 'https://www.googleapis.com/youtube/v3/videos?key=AIzaSyDc3C5q7k3JHC-GW5ViwoqeeFFyrzTnvYY',
-        searchApi = 'https://www.googleapis.com/youtube/v3/search?key=AIzaSyDc3C5q7k3JHC-GW5ViwoqeeFFyrzTnvYY';
+    var STATISTICS_API = 'https://www.googleapis.com/youtube/v3/videos?key=AIzaSyDc3C5q7k3JHC-GW5ViwoqeeFFyrzTnvYY',
+        SEARCH_API = 'https://www.googleapis.com/youtube/v3/search?key=AIzaSyDc3C5q7k3JHC-GW5ViwoqeeFFyrzTnvYY';
 
 
-    function generateYoutubeInfo(Ids) {
-        return ajax.get(statsApi + '&part=statistics,snippet&id=' + Ids.join());
+    function generateYoutubeStatistics(Ids) {
+        return ajax.get(STATISTICS_API + '&part=statistics,snippet&id=' + Ids.join());
     }
 
-    function searchYoutube(searchKey) {
+    function searchYoutubeVideo(searchKey) {
         var videosList = [], 
             Ids = [];
-        return ajax.get(searchApi + '&part=snippet&maxResults=15&q=' + searchKey).then(function (response) {
+        return ajax.get(SEARCH_API + '&part=snippet&maxResults=15&q=' + searchKey).then(function (response) {
             videosList = JSON.parse(response);
             videosList.items.forEach(function (item) {
                 Ids.push(item.id.videoId);
             });
-            return generateYoutubeInfo(Ids);
+            return generateYoutubeStatistics(Ids);
         }).then(function (response) {
             var statisticsResult = JSON.parse(response);
             videosList.items.forEach(function (item) {
@@ -35,6 +35,6 @@ myApp.youtubeService = (function (ajax) {
     }
 
     return {
-        search: searchYoutube
+        search: searchYoutubeVideo
     }
 })(myApp.ajax);
