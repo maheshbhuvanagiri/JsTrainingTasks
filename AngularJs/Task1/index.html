@@ -9,22 +9,67 @@
     <script type="application/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/angular.js"></script>
     <script type="application/javascript" src="app.js"></script>
     <script type="application/javascript" src="catClicker/singleCatClicker.controller.js"></script>
+    <script type="application/javascript" src="catClicker/doubleCatClicker.controller.js"></script>
+    <script type="application/javascript" src="catClicker/multiCatClicker.controller.js"></script>
 </head>
 
 <body ng-app="myApp">
     </br>
     <div ng-controller="singleCatClicker as ctrl">
         <div class="row">
-            <span class="col-md-1">Signle Cat Clicking</span>
+            <h2 class="col-md-12">Signle Cat Clicking</h2>
             <div class="col-md-2">
                 <img ng-src="http://placekitten.com.s3.amazonaws.com/homepage-samples/200/140.jpg" alt="cat" ng-click="ctrl.onClick()"></img>
             </div>
             <div class="col-md-1">
-                <span>Click Count: </span><label ng-bind="ctrl.count">
+                <span>Clicks Count: </span><label ng-bind="ctrl.count">
             </div>
-            </div>
+        </div>
     </div>
     </br>
+    <div ng-controller="doubleCatClicker as ctrl">
+        <div class="row">
+            <h2 class="col-md-12">Two Cat Clicking</h2>
+            <div ng-repeat="cat in ctrl.cats track by $index">
+                <div class="col-md-2">
+                <div class="col-md-12">
+                    <img ng-src={{cat.src}} alt="cat" ng-click="ctrl.onClick($index)"></img>
+                </div>
+                <div class="col-md-12">
+                    <span>Name: </span><label ng-bind="cat.name">
+                </div>
+                <div class="col-md-12">
+                    <span>Clicks Count: </span><label ng-bind="cat.count">
+                </div>
+                <div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </br>
+    <div ng-controller="multiCatClicker as ctrl">
+        <div class="row">
+            <h2 class="col-md-12">Multi Cat Clicking</h2>
+            <div class="col-md-12">
+                <div class="col-md-2">
+                    <div class="col-md-12" ng-repeat="cat in ctrl.cats track by $index">
+                        <label ng-bind="cat.name" ng-click="ctrl.onLabelClick($index)">                    
+                    </div>
+                </div>
+                <div class="col-md-10" ng-if="ctrl.activeCat.name">
+                     <div class="col-md-12">
+                        <span>Name: </span><label ng-bind="ctrl.activeCat.name">
+                    </div>
+                    <div class="col-md-12">
+                        <img ng-src={{ctrl.activeCat.src}} alt="cat" ng-click="ctrl.onImageClick()"></img>
+                    </div>
+                     <div class="col-md-12">
+                        <span>Clicks Count: </span><label ng-bind="ctrl.activeCat.count">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
