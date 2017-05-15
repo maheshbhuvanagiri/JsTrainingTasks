@@ -1,3 +1,3 @@
 (function(){
-    var mayApp = angular.module('myApp',[]);
+    angular.module('myApp',[]);
 })();
