@@ -20,24 +20,13 @@ myApp.ui = (function (document) {
         mobResolution ={
             MAX_WIDTH: 450,
             MIN_WIDTH: 0
-        };
-
-    window.addEventListener("resize", function () {
+        },
         width = window.innerWidth
             || document.documentElement.clientWidth
             || document.body.clientWidth;
-        height = window.innerHeight
-            || document.documentElement.clientHeight
-            || document.body.clientHeight;
 
-        if (width < tabResolution.MAX_WIDTH && width > tabResolution.MIN_WIDTH) {
-            options.pageSize = 2;
-        } else if (width < tabResolution.MAX_WIDTH) {
-            options.pageSize = 1;
-        } else {
-            options.pageSize = 4;
-        }
-        displayTiles();
+    window.addEventListener("resize", function () {
+        initiatePaging();
     });
 
     window.addEventListener("touchstart", function (event) {
@@ -48,6 +37,20 @@ myApp.ui = (function (document) {
         swipeEndX = event.changedTouches[0].screenX;
         onSwipeEnd();
     }, false);
+
+    function initiatePaging(){
+        width = window.innerWidth
+            || document.documentElement.clientWidth
+            || document.body.clientWidth;
+        if (width < tabResolution.MAX_WIDTH && width > tabResolution.MIN_WIDTH) {
+            options.pageSize = 2;
+        } else if (width < tabResolution.MAX_WIDTH) {
+            options.pageSize = 1;
+        } else {
+            options.pageSize = 4;
+        }
+        displayTiles();
+    }
 
     function onSwipeEnd() {
         var swipeIndex;
@@ -67,28 +70,6 @@ myApp.ui = (function (document) {
             }
         }
         displayTiles();
-    }
-
-    function displayTiles(){
-        var container = document.getElementById("container"),
-            tiles = container.querySelector('.tiles'),
-            prePageIndex = startIndex;
-
-        startIndex = (options.currentPageIndex * options.pageSize);
-        if (startIndex > options.totalItems.length) {
-            startIndex = 0;
-            options.currentPageIndex = 0;
-        }
-        endIndex = startIndex + options.pageSize;
-
-        tiles.querySelectorAll("li").forEach(function (ele, index) {
-            if (index >= startIndex && index < endIndex) {
-                ele.classList.remove("hide");
-            } else {
-                ele.classList.add("hide");
-            }
-        });
-        createPager();
     }
 
     function createRoller() {
@@ -111,7 +92,29 @@ myApp.ui = (function (document) {
             body.removeChild(divElement);
         }
         body.appendChild(document.importNode(rollerTemplate.content, true));
-        displayTiles();   
+        initiatePaging();  
+    }
+
+    function displayTiles(){
+        var container = document.getElementById("container"),
+            tiles = container.querySelector('.tiles'),
+            prePageIndex = startIndex;
+
+        startIndex = (options.currentPageIndex * options.pageSize);
+        if (startIndex > options.totalItems.length) {
+            startIndex = 0;
+            options.currentPageIndex = 0;
+        }
+        endIndex = startIndex + options.pageSize;
+
+        tiles.querySelectorAll("li").forEach(function (ele, index) {
+            if (index >= startIndex && index < endIndex) {
+                ele.classList.remove("hide");
+            } else {
+                ele.classList.add("hide");
+            }
+        });
+        createPager();
     }
 
     function createTile(item) {
