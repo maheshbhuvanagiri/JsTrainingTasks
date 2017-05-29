@@ -13,10 +13,11 @@
         vm.activeCat = {};
 
         vm.onLabelClick = function (index) {
-            vm.activeCat = vm.searchResult.filter(function(cat){
-                if(cat.id == index){
+            vm.searchResult.map(function (cat) {
+                if (cat.id == index) {
+                    vm.activeCat = cat;
                     cat.hasViewed = true;
-                    return true;
+                    break;
                 }
             });
             vm.activeCat.count = 0;
