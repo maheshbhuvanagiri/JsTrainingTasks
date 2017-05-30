@@ -17,7 +17,6 @@
                 if (cat.id == index) {
                     vm.activeCat = cat;
                     cat.hasViewed = true;
-                    break;
                 }
             });
             vm.activeCat.count = 0;
