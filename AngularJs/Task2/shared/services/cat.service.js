@@ -41,6 +41,12 @@
             return defered.promise
         };
 
+        this.getCatById = function(id){
+            return cats.filter(function(cat){
+                return cat.id == id;
+            })[0];
+        }
+
         this.addCat = function (cat) {
             var defered = $q.defer();
             cats.push({
