@@ -2,18 +2,24 @@
     "use strict"
     app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
 
-        $urlRouterProvider.otherwise('/about');
+        $urlRouterProvider.otherwise('/');
 
         $stateProvider
             .state('about', {
-                url: '/about',
+                url: '/',
                 views: {
                     '': { templateUrl: "about/about.html" }
                 }
             })
             .state('catviewer', {
                 url: '/cats',
-                templateUrl: 'catViewer/catViewer.html'
+                                resolve: {
+                    catresults: ['catService', function (catService) {
+                        return catService.getCats();
+                    }]
+                },
+                templateUrl: 'catViewer/catViewer.html',
+                controller: 'catViewerController as ctrl'
             })
             .state('addCat', {
                 url: '/add',

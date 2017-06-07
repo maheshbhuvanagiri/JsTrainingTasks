@@ -1,8 +1,9 @@
 (function (app) {
     "use strict";
-    app.controller('catViewerController', function (catService) {
+    app.controller('catViewerController', ['catService', 'catresults', function (catService, catResults) {
         var vm = this;
         vm.searchOrder = false;
+        vm.searchResult = catResults;
         vm.orderBy = [{
             value: false,
             text: 'Ascending'
@@ -38,6 +39,6 @@
             }
         }
 
-    });
+    }]);
 
 })(angular.module('myApp'))

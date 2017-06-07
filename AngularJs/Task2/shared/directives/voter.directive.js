@@ -9,6 +9,7 @@
                 }
             }
         }
+
         return {
             restrict: 'E',
             scope: {
