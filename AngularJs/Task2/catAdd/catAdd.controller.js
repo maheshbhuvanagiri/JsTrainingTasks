@@ -29,7 +29,7 @@
             };
 
             vm.clear = function () {
-                vm.cat = {};
+                $state.go('catviewer');
             }
         }]);
 
