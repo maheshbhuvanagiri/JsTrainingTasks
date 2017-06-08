@@ -1,7 +1,6 @@
 (function (app) {
-
+    "use strict"
     app.directive('voter', function (catService) {
-
         function catVoter(scope, element, attr, constructor) {
             scope.voter = function (value) {
                 if (scope.cat.voteCount == 0) {
@@ -9,7 +8,6 @@
                 }
             }
         }
-
         return {
             restrict: 'E',
             scope: {

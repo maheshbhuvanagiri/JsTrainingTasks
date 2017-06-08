@@ -24,6 +24,9 @@
             .state('addCat', {
                 url: '/add',
                 templateUrl: 'catAdd/catAdd.html'
+            }).state('updateCat', {
+                url: '/update/:id',
+                templateUrl: 'catAdd/catAdd.html'
             });
 
         $locationProvider.html5Mode({

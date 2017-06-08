@@ -1,7 +1,6 @@
 (function (app) {
-
+    "use strict"
     app.directive('onEnter', function () {
-
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
