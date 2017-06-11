@@ -34,9 +34,10 @@
 
 <body ng-app="myApp">
     <div ui-view="menubar"></div>
-    
     <div class="container">
-        <div ui-view="mainContainerView"></div>
+        <div ui-view="mainContainerView">
+            <ui-view></ui-view>
+        </div>
     </div>
 </body>
 
