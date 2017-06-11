@@ -41,4 +41,4 @@
 
     }]);
 
-})(angular.module('myApp'))
+})(angular.module('catView'))

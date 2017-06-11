@@ -2,37 +2,26 @@
     "use strict"
     app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
 
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/login');
 
         $stateProvider
-            .state('about', {
+            .state('cat', {
                 url: '/',
-                views: {
-                    '': { templateUrl: "about/about.html" }
-                }
-            })
-            .state('catviewer', {
-                url: '/cats',
-                                resolve: {
-                    catresults: ['catService', function (catService) {
-                        return catService.getCats();
-                    }]
-                },
-                templateUrl: 'catViewer/catViewer.html',
-                controller: 'catViewerController as ctrl'
-            })
-            .state('addCat', {
-                url: '/add',
-                templateUrl: 'catAdd/catAdd.html'
-            }).state('updateCat', {
-                url: '/update/:id',
-                templateUrl: 'catAdd/catAdd.html'
+                views: { 'menubar': { templateUrl: "shared/menubar.html" } },
+                data: { authenticate: false }
+            }).state('cat.user', {
+                views: { 'mainContainerView@': { templateUrl: 'user/user.html' } },
+                data: { authenticate: false }
+            }).state('cat.view', {
+                views: { 'mainContainerView@': { templateUrl: 'cat/cat.html' } },
+                data: { authenticate: true }
             });
 
-        $locationProvider.html5Mode({
-            enabled: true,
-            requireBase: false
-        });
+        // $locationProvider.html5Mode({
+        //     enabled: true,
+        //     requireBase: false
+        // });
+
     });
 
 })(angular.module("myApp"));

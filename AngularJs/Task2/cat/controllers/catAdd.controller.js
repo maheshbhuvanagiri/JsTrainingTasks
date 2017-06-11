@@ -18,7 +18,7 @@
                     catService.addUpdateCat(vm.cat).then(function (isAdded) {
                         if (isAdded) {
                             alert("Cat added successfully");
-                            $state.go('catviewer');
+                            $state.go('cat.view.all');
                         } else {
                             alert("Failed to add cat");
                         }
@@ -29,8 +29,8 @@
             };
 
             vm.clear = function () {
-                $state.go('catviewer');
+                $state.go('cat.view.all');
             }
         }]);
 
-})(angular.module("myApp"))
+})(angular.module("catView"))
