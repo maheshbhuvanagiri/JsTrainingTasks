@@ -7,9 +7,10 @@
         $stateProvider
             .state('cat', {
                 url: '/',
-                views: { 'menubar': { templateUrl: "shared/menubar.html" },
-                 '': { templateUrl: "about/about.html" }
-             },
+                views: {
+                    'menubar': { templateUrl: "shared/menubar.html" },
+                    '': { templateUrl: "about/about.html" }
+                },
                 data: { authenticate: false }
             }).state('cat.user', {
                 views: { 'mainContainerView@': { templateUrl: 'user/user.html' } },
@@ -19,10 +20,10 @@
                 data: { authenticate: true }
             });
 
-        // $locationProvider.html5Mode({
-        //     enabled: true,
-        //     requireBase: false
-        // });
+        $locationProvider.html5Mode({
+            enabled: true,
+            requireBase: false
+        });
 
     });
 
