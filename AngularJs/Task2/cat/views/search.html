@@ -39,8 +39,9 @@
                         <voter cat = ctrl.activeCat></voter>                     
                     </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-12" ng-if="ctrl.canUpdate">
                     <a ui-sref="cat.view.update({id: ctrl.activeCat.id})">Update Cat</a>
+                    <a ng-click="ctrl.deleteCat()">Delete Cat</a>
                 </div>
             </div>
         </div>

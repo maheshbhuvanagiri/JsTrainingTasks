@@ -10,47 +10,44 @@
         };
 
         this.getCatById = function (id) {
-            var defered = $q.defer(),
-                cat = currentObj.catDb.filter(function (cat) {
-                    return cat.id == id;
-                })[0];
-
-            defered.resolve(cat);
-            return defered.promise
-        }
-
-
-        this.addUpdateCat = function (cat) {
-            var defered = $q.defer();
-            if (cat.id) {
-                var isUpdate = false;
-                currentObj.catDb.map(function (catObj) {
-                    if (catObj.id == cat.id && !isUpdate) {
-                        catObj.name = cat.name;
-                        catObj.url = cat.url;
-                        isUpdate = true;
-                    }
-                });
-            } else {
-                currentObj.catDb.push({
-                    id: new Date().getTime(),
-                    name: cat.name,
-                    url: cat.url,
-                    hasViewed: false,
-                    voteCount: 0
-                });
-            }
-            defered.resolve(true);
-            return defered.promise
+            return $http({
+                method: 'POST',
+                url: '/getCatById',
+                data: id                
+            }).then(function (respose) {
+                return respose.data;
+            });
         };
 
-        this.searchCat = function (name) {
-            var defered = $q.defer();
-            var searchResult = currentObj.catDb.filter(function (cat) {
-                return cat.name.toLowerCase().indexOf(name.toLowerCase()) > -1;
+        this.addUpdateCat = function(cat){
+             return $http({
+                method: 'POST',
+                url: '/addUpdateCat',
+                data: cat                
+            }).then(function (respose) {
+                return true;
             });
-            defered.resolve(searchResult);
-            return defered.promise
+        };
+
+        this.deleteCat = function(cat){
+            return $http({
+                method: 'POST',
+                url: '/deleteCat',
+                data: cat                
+            }).then(function (respose) {
+                return true;
+            });
+        };
+
+
+        this.searchCat = function (name) {
+            return $http({
+                method: 'POST',
+                url: '/search',
+                data: {name: name}                
+            }).then(function (respose) {
+                return respose.data;
+            });
         };
     });
 

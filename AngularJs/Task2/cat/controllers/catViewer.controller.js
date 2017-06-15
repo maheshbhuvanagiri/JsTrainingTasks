@@ -1,6 +1,6 @@
 (function (app) {
     "use strict";
-    app.controller('catViewerController', ['catService', 'catresults', function (catService, catResults) {
+    app.controller('catViewerController', ['catService', 'catresults', 'currentObj', function (catService, catResults, currentObj) {
         var vm = this;
         vm.searchOrder = false;
         vm.searchResult = catResults;
@@ -15,9 +15,13 @@
         vm.activeCat = {};
 
         vm.onLabelClick = function (cat) {
+            vm.canUpdate = false;
             vm.activeCat = cat;
             cat.hasViewed = true;
             vm.activeCat.count = 0;
+            if (cat.userId == currentObj.user.id) {
+                vm.canUpdate = true;
+            }
         }
 
         vm.onImageClick = function () {
@@ -37,6 +41,16 @@
                     vm.searchResult = result;
                 });
             }
+        }
+
+        vm.deleteCat = function () {
+            catService.deleteCat(vm.activeCat).then(function (result) {
+                if (result){
+                    vm.searchResult = vm.searchResult.filter(function (obj) {
+                        return obj.id != vm.activeCat.id;
+                    });
+                }
+            });
         }
 
     }]);
